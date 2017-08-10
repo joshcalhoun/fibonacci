@@ -1,19 +1,29 @@
-import gspread
+import gspread, customer, pprint, datetime
 from oauth2client.service_account import ServiceAccountCredentials
-import pprint
-import datetime 
 
+users = ['josh','dawson']
+abilities = ['add customer','hosting renewal','customer info','quit']
+appname = "JCDB"
+username = ''
+
+def list_options():
+    print ('Here\'s your list of options.')
+    for ability in abilities:
+        print("-" + ability)
+    request = input("What would you like to do?: ")
+def apology(name):
+    print (f'Sorry {username] can\'t do that yet :(.')
+    
+print(f"Welcome to {appname}!\n")
 while True:
-    option = input ("Welcome to JC consulting customer database, please enter login: ")
-    if (option.lower() == "josh" ):
-        break
-    elif (option.lower() == "dawson" ):
+    username = input ("Username please: ")
+    if (option in users):
         break
     else:
         print ("Wrong Username")
 
-print ("Welcome",option.upper())
-print ("Database is now loading....")
+print(f"Welcome {username}!")
+print("Database is now loading....")
 
 scope = ['https://spreadsheets.google.com/feeds']
 creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
@@ -21,45 +31,36 @@ client = gspread.authorize(creds)
 sheet = client.open("JC_db").sheet1
 
 while True:
-    
-    info = """
-Here is a list of the functions I can help you with:
-    -Add customer
-    
-    -Hosting renewal
-    
-    -Customer information
-    
-    -Quit"""
-    print (info)
+    print('What would you like to do?')
+    request = input('Type \'o\' for more options: ' )
+    time.sleep(5)
+    if (request.lower() == 'o'):
+        list_options()
 
-    
-    request = input ("what can I do for you: ")
-    
-    if (request.lower() == "add customer"):
-        print ("sorry this function is not available due to development but will be available soon")
-        
+    elif (request.lower() == "add customer"):
+        apology(username)
+
     elif (request.lower() == "hosting renewal"):
-       
+
         tday = datetime.date.today()
         print ("Today's date is:", tday)
         print ("Now checking the data base for upcoming renewals......")
-        
-        total_dates = 7 
-        counter = 0 
+
+        total_dates = 7
+        counter = 0
         for i in range(2,total_dates+1):
             counter = i
             names = sheet.cell(counter,1).value
             sheet_dates = sheet.cell(counter,2).value
             dates = datetime.datetime.strptime(sheet_dates, "%Y/%m/%d")
             real_dates = dates.date()
-            date_difference = real_dates - tday 
+            date_difference = real_dates - tday
             if (date_difference.days <= 7):
-                print (real_dates, names)      
+                print (real_dates, names)
 
-    elif (request.lower() == "customer information"):
+    elif (request.lower() == "customer info"):
         customer_name = input ("Please enter a customer's name to see their contact information: ")
-        
+
         total_customers = 7
         counter1 = 0
         for n in range (2, total_customers+1):
@@ -71,17 +72,17 @@ Here is a list of the functions I can help you with:
                 print ("Customer name:",sheet_name.upper())
                 print ("Customer email:", c_email)
                 print ("Customer phonenumber:",c_phone)
-        
-        
-        
+
 
     elif (request.lower() == "quit"):
         print ("Thank you for using JC consulting customer database")
         break
-    
-    else:
-        print("Sorry but I do not understand your request please try again or enter Quit to stop the program.")
-        
-    
 
+    else:
+        apology(username)
+        
+    choice = input('Type Q to quit, and any other key to do something else' )
+    if (choice.lower() == 'q'):
+        break
+        
 
