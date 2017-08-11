@@ -1,7 +1,7 @@
 class Customer:
     services = []
-    def __init__(self, company):
-        self.company = company
+    def __init__(self, name):
+        self.name = name
 
     def add_service(self, name, date, time_amount):
         service = Service(name, date, time_amount)
