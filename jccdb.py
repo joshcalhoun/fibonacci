@@ -12,7 +12,6 @@ def list_options():
     print ('Here\'s your list of options.')
     for ability in abilities:
         print("-" + ability)
-    request = input("What would you like to do?: ")
     
 def apology(name):
     print(f'Sorry {username}'+' can\'t do that yet :(.')
@@ -49,57 +48,35 @@ print("Database is now loading....")
 
 startUp()
 
-
-    
-
 while True:
     print('What would you like to do?')
     request = input('Type \'o\' for more options: ' )
-
-        
+ 
     if (request.lower() == 'o'):
         list_options()
-        
+        request =  input('What would you like to do?')
+
     elif (request.lower() == "add customer"):
         apology(username)
 
-    elif (request.lower() == "hosting renewal"):
+    elif ("host" in request.lower()):
 
         tday = datetime.date.today()
-        print ("Today's date is:", tday)
-        print ("Now checking the data base for upcoming renewals......")
 
-        total_dates = 7
-        counter = 0
-        #for i in range(1, sheet.row_count():
-                       
-        values_list = sheet.row_values(1)
+        for customer in customer_list:
+            date = datetime.datetime.strptime(customer.renewal_date, "%m/%d/%Y")
+            if (date < datetime.datetime.now()):
+                print(str(date.strftime('%B, %d, %Y')) + " " + customer.name)
 
-        for i in range(2,total_dates+1):
-            counter = i
-            names = sheet.cell(counter,1).value
-            sheet_dates = sheet.cell(counter,2).value
-            dates = datetime.datetime.strptime(sheet_dates, "%Y/%m/%d")
-            real_dates = dates.date()
-            date_difference = real_dates - tday
-            if (date_difference.days <= 7):
-                print (real_dates, names)
 
     elif (request.lower() == "customer info"):
         customer_name = input ("Please enter a customer's name to see their contact information: ")
-
-        total_customers = 7
-        counter1 = 0
-        for n in range (2, total_customers+1):
-            counter1 = n
-            sheet_name = sheet.cell(counter1,1).value
-            if (customer_name.lower() == sheet_name.lower()):
-                c_email = sheet.cell(counter1,3).value
-                c_phone = sheet.cell(counter1,4).value
-                print ("Customer name:",sheet_name.upper())
-                print ("Customer email:", c_email)
-                print ("Customer phonenumber:",c_phone)
-
+        for customer in customer_list:
+            if(customer_name.lower() == customer.name.lower()):
+                print(f'''Name: {customer.name}
+Email: {customer.email}
+Phone: {customer.phone}
+Renewal Date: {customer.renewal_date}''')
 
     elif (request.lower() == "quit"):
         print ("Thank you for using JC consulting customer database!")
