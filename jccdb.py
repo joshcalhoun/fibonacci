@@ -25,8 +25,11 @@ def addCell(value, sheet):
     else:
         pass
 
-def wordIn(word, string):
-    return (word in string)
+def allWordsCheck(words, string):
+    result = True
+    for word in words:
+        result = ((word in string)and result)
+    return result
 
 def startUp(sheet):
     i = 1
@@ -68,7 +71,7 @@ while True:
         list_options()
         request =  input('What would you like to do?')
 
-    elif (wordIn("add", r) and wordIn("customer", r)):
+    elif (allWordsCheck(["add","customer"],r)):
         new_values = ["Name","Renewal Date(M/D/Y)","Email","Phone"]
         for x in range(len(new_values)):
             value = input(new_values[x] + ': ')
@@ -84,7 +87,7 @@ while True:
 
 
 
-    elif (wordIn("host",r)):
+    elif (allWordsCheck(["host"],r)):
 
         tday = datetime.date.today()
 
@@ -95,10 +98,10 @@ while True:
         confirmation(username)
 
 
-    elif (wordIn("customer",r) and wordIn("info",r)):
+    elif (allWordsCheck(["info","customer"],r)):
         customer_name = input ("Please enter a customer's name to see their contact information: ")
         for customer in customer_list:
-            if(customer_name.lower() == customer.name.lower()):
+            if(customer_name.lower() in customer.name.lower()):
                 print(f'''Name: {customer.name}
 Email: {customer.email}
 Phone: {customer.phone}
@@ -107,7 +110,7 @@ Renewal Date: {customer.renewal_date}''')
         confirmation(username)
 
 
-    elif (wordIn("quit",r)and wordIn("stop",r)):
+    elif (allWordsCheck(["quit","stop"],r)):
         confirmation(username)
         break
 
