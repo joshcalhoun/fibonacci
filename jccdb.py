@@ -16,13 +16,14 @@ def list_options():
 def apology(name):
     print(f'Sorry {username}'+' can\'t do that yet :(.')
 
-def startUp():
+def addCell(value, sheet):
+    if (value == ""):
+        pass
+    else:
+        pass
+
+def startUp(sheet):
     i = 1
-    scope = ['https://spreadsheets.google.com/feeds']
-    creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
-    client = gspread.authorize(creds)
-    sheet = client.open("JC_db").sheet1
-    
     while (i < int(sheet.row_count)):
         i = i + 1
         if (sheet.row_values(i) ==  ''):
@@ -46,7 +47,12 @@ while True:
 print(f"Welcome {username}!")
 print("Database is now loading....")
 
-startUp()
+scope = ['https://spreadsheets.google.com/feeds']
+creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
+client = gspread.authorize(creds)
+sheet = client.open("JC_db").sheet1
+    
+startUp(sheet)
 
 while True:
     print('What would you like to do?')
@@ -58,6 +64,18 @@ while True:
 
     elif (request.lower() == "add customer"):
         apology(username)
+        new_values = ["Name","Renewal Date(M/D/Y)","Email","Phone"]
+        for x in range(len(new_values)):
+            value = input(new_values[x] + ': ')
+            new_values[x] = value
+        customer = Customer(new_values[0])
+        customer.email = new_values[2]
+        customer.phone = new_values[3]
+        customer.renewal_date = new_values[1]
+        customer_list.append(customer)
+        sheet.insert_row(new_values, len(customer_list) + 1)
+
+
 
     elif ("host" in request.lower()):
 
