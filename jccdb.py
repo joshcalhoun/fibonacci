@@ -78,6 +78,7 @@ while True:
         customer.phone = new_values[3]
         customer.renewal_date = new_values[1]
         customer_list.append(customer)
+        print('Hold this can take up to a minute to complete...')
         sheet.insert_row(new_values, len(customer_list) + 1)
         confirmation(username)
 
