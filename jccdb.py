@@ -14,7 +14,10 @@ def list_options():
         print("-" + ability)
     
 def apology(name):
-    print(f'Sorry {username}'+' can\'t do that yet :(.')
+    print(f'Sorry {name}'+' can\'t do that yet.')
+
+def confirmation(name):
+    print('Completed!')
 
 def addCell(value, sheet):
     if (value == ""):
@@ -76,6 +79,7 @@ while True:
         customer.renewal_date = new_values[1]
         customer_list.append(customer)
         sheet.insert_row(new_values, len(customer_list) + 1)
+        confirmation(username)
 
 
 
@@ -87,6 +91,7 @@ while True:
             date = datetime.datetime.strptime(customer.renewal_date, "%m/%d/%Y")
             if (date < datetime.datetime.now()):
                 print(str(date.strftime('%B, %d, %Y')) + " " + customer.name)
+        confirmation(username)
 
 
     elif (wordIn("customer",r) and wordIn("info",r)):
@@ -98,14 +103,17 @@ Email: {customer.email}
 Phone: {customer.phone}
 Renewal Date: {customer.renewal_date}''')
 
+        confirmation(username)
+
+
     elif (wordIn("quit",r)and wordIn("stop",r)):
-        print ("Thank you for using JC consulting customer database!")
+        confirmation(username)
         break
 
     else:
         apology(username)
         
-    choice = input('Type Q to quit, and any other key to do something else: ' )
+    choice = input('Enter to continue or Q to quit: ' )
     if (choice.lower() == 'q'):
         break
         
