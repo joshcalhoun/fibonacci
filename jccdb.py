@@ -22,6 +22,9 @@ def addCell(value, sheet):
     else:
         pass
 
+def wordIn(word, string):
+    return (word in string)
+
 def startUp(sheet):
     i = 1
     while (i < int(sheet.row_count)):
@@ -57,13 +60,12 @@ startUp(sheet)
 while True:
     print('What would you like to do?')
     request = input('Type \'o\' for more options: ' )
- 
-    if (request.lower() == 'o'):
+    r = request.lower()
+    if (r == 'o'):
         list_options()
         request =  input('What would you like to do?')
 
-    elif (request.lower() == "add customer"):
-        apology(username)
+    elif (wordIn("add", r) and wordIn("customer", r)):
         new_values = ["Name","Renewal Date(M/D/Y)","Email","Phone"]
         for x in range(len(new_values)):
             value = input(new_values[x] + ': ')
@@ -77,7 +79,7 @@ while True:
 
 
 
-    elif ("host" in request.lower()):
+    elif (wordIn("host",r)):
 
         tday = datetime.date.today()
 
@@ -87,7 +89,7 @@ while True:
                 print(str(date.strftime('%B, %d, %Y')) + " " + customer.name)
 
 
-    elif (request.lower() == "customer info"):
+    elif (wordIn("customer",r) and wordIn("info",r)):
         customer_name = input ("Please enter a customer's name to see their contact information: ")
         for customer in customer_list:
             if(customer_name.lower() == customer.name.lower()):
@@ -96,7 +98,7 @@ Email: {customer.email}
 Phone: {customer.phone}
 Renewal Date: {customer.renewal_date}''')
 
-    elif (request.lower() == "quit"):
+    elif (wordIn("quit",r)and wordIn("stop",r)):
         print ("Thank you for using JC consulting customer database!")
         break
 
